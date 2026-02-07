@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verification - CRM</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="verification-card">
+            <div id="loadingState">
+                <div class="loader-large"></div>
+                <h2>Verifying your email...</h2>
+                <p>Please wait while we verify your email address.</p>
+            </div>
+
+            <div id="successState" style="display: none;">
+                <div class="icon-success">✓</div>
+                <h2>Email Verified!</h2>
+                <p>Your email has been successfully verified.</p>
+                <p>You can now log in to your account.</p>
+                <a href="/" class="btn-primary">Go to Homepage</a>
+            </div>
+
+            <div id="errorState" style="display: none;">
+                <div class="icon-error">✗</div>
+                <h2>Verification Failed</h2>
+                <p id="errorText">The verification link is invalid or has expired.</p>
+                <a href="/" class="btn-secondary">Back to Registration</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get token from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+
+        if (!token) {
+            showError('No verification token provided');
+        } else {
+            verifyEmail(token);
+        }
+
+        async function verifyEmail(token) {
+            try {
+                const response = await fetch(`/api/verify-email?token=${token}`);
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    showSuccess(data.message);
+                } else {
+                    showError(data.detail || 'Verification failed');
+                }
+            } catch (error) {
+                showError('Network error. Please try again.');
+            }
+        }
+
+        function showSuccess(message) {
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('successState').style.display = 'block';
+        }
+
+        function showError(message) {
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('errorState').style.display = 'block';
+            document.getElementById('errorText').textContent = message;
+        }
+    </script>
+</body>
+</html>

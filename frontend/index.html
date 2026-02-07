@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration - CRM</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="registration-card">
+            <h1>Create Your Account</h1>
+            <p class="subtitle">Join us today and get started</p>
+
+            <form id="registrationForm" enctype="multipart/form-data">
+                <!-- Profile Picture Upload -->
+                <div class="form-group">
+                    <label for="profilePicture">Profile Picture (Optional)</label>
+                    <div class="profile-upload">
+                        <div id="profilePreview" class="profile-preview">
+                            <span class="upload-icon">📷</span>
+                            <span class="upload-text">Click to upload</span>
+                        </div>
+                        <input type="file" id="profilePicture" name="profile_picture" accept="image/jpeg,image/png,image/gif">
+                    </div>
+                    <small class="help-text">JPEG, PNG, or GIF. Max 5MB.</small>
+                </div>
+
+                <!-- Name -->
+                <div class="form-group">
+                    <label for="name">Full Name *</label>
+                    <input type="text" id="name" name="name" required minlength="2" maxlength="255" placeholder="John Doe">
+                </div>
+
+                <!-- Email -->
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" required placeholder="john@example.com">
+                </div>
+
+                <!-- Date of Birth -->
+                <div class="form-group">
+                    <label for="dateOfBirth">Date of Birth *</label>
+                    <input type="date" id="dateOfBirth" name="date_of_birth" required>
+                    <small class="help-text">You must be at least 18 years old.</small>
+                </div>
+
+                <!-- Phone Number -->
+                <div class="form-group">
+                    <label for="phoneNumber">Phone Number *</label>
+                    <div class="phone-input-group">
+                        <select id="countryCode" name="country_code" required>
+                            <option value="">Select</option>
+                            <!-- Populated dynamically -->
+                        </select>
+                        <input type="tel" id="phoneNumber" name="phone_number" required
+                               placeholder="5551234567" pattern="[0-9]{7,15}">
+                    </div>
+                    <small class="help-text">Enter digits only, no spaces or dashes.</small>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" id="submitBtn" class="btn-primary">
+                    <span id="btnText">Create Account</span>
+                    <span id="btnLoader" class="loader" style="display: none;"></span>
+                </button>
+
+                <!-- Messages -->
+                <div id="successMessage" class="message success" style="display: none;"></div>
+                <div id="errorMessage" class="message error" style="display: none;"></div>
+            </form>
+        </div>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
