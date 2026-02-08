@@ -1,0 +1,15 @@
+# Files to ignore during Render deployment
+*.md
+.git
+.github
+.DS_Store
+__pycache__
+*.pyc
+.env
+.env.example
+*.log
+.vscode
+.idea
+docker-compose.yml
+Makefile
+QUICKSTART.md

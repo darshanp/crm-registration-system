@@ -16,10 +16,19 @@ app = FastAPI(
     description="CRM Application with User Registration, E-commerce, and Payment Processing",
 )
 
-# CORS middleware for local development
+# CORS middleware
+allowed_origins = [
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+]
+
+# Add production frontend URL if configured
+if settings.frontend_url and settings.frontend_url not in allowed_origins:
+    allowed_origins.append(settings.frontend_url)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:8000", "http://127.0.0.1:8000"],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -62,11 +71,19 @@ def health_check():
 def on_startup():
     """Initialize database on startup."""
     print(f"\n🚀 Starting {settings.app_name} in {settings.environment} mode")
-    print(f"📚 API Documentation: http://localhost:8000/docs")
-    print(f"🌐 Frontend: http://localhost:8000/\n")
+
+    if settings.environment == "development":
+        print(f"📚 API Documentation: http://localhost:8000/docs")
+        print(f"🌐 Frontend: http://localhost:8000/")
+    else:
+        print(f"📚 API Documentation: {settings.frontend_url}/docs")
+        print(f"🌐 Frontend: {settings.frontend_url}")
+
+    print()
 
     # Create database tables if they don't exist
     try:
         init_db()
+        print("✅ Database initialized successfully")
     except Exception as e:
         print(f"⚠️  Database initialization warning: {e}")
